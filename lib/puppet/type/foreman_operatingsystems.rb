@@ -39,6 +39,7 @@ Puppet::Type.newtype(:foreman_operatingsystems) do
 
   newproperty(:description) do
     desc 'The description of the os'
+    defaultto { @resource[:name] }
   end
 
   newproperty(:family) do
