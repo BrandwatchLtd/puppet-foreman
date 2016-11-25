@@ -26,10 +26,11 @@ Puppet::Type.type(:foreman_resource).provide(:rest_v3) do
 
   def oauth_consumer_key
     @oauth_consumer_key ||= begin
-    if resource[:consumer_key]
-      resource[:consumer_key]
-    else
-      settings[:oauth_consumer_key]
+      if resource[:consumer_key]
+        resource[:consumer_key]
+      else
+        settings[:oauth_consumer_key]
+      end
     end
   end
 
