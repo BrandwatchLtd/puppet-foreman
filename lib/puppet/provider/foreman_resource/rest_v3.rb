@@ -39,6 +39,20 @@ Puppet::Type.type(:foreman_resource).provide(:rest_v3) do
     end
   end
 
+  def ssl_ca_file
+    @ssl_ca_file ||= begin
+      if resource[:ssl_ca_file]
+        resource[:ssl_ca_file]
+      else
+        begin
+          YAML.load_file('/etc/foreman/settings.yaml')[:ssl_ca_file]
+        rescue
+          fail "Resource #{resource[:name]} cannot be managed: No SSL CA filename available"
+        end
+      end
+    end
+  end
+
   def oauth_consumer
     @consumer ||= OAuth::Consumer.new(oauth_consumer_key, oauth_consumer_secret, {
       :site               => resource[:base_url],
@@ -46,7 +60,7 @@ Puppet::Type.type(:foreman_resource).provide(:rest_v3) do
       :authorize_path     => '',
       :access_token_path  => '',
       :timeout            => resource[:timeout],
-      :ca_file            => resource[:ssl_ca]
+      :ca_file            => resource[:ssl_ca_file]
     })
   end
 
