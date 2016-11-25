@@ -41,8 +41,8 @@ Puppet::Type.type(:foreman_resource).provide(:rest_v3) do
 
   def ssl_ca_file
     @ssl_ca_file ||= begin
-      if resource[:ssl_ca_file]
-        resource[:ssl_ca_file]
+      if resource[:ssl_ca]
+        resource[:ssl_ca]
       else
         begin
           YAML.load_file('/etc/foreman/settings.yaml')[:ssl_ca_file]
@@ -60,7 +60,7 @@ Puppet::Type.type(:foreman_resource).provide(:rest_v3) do
       :authorize_path     => '',
       :access_token_path  => '',
       :timeout            => resource[:timeout],
-      :ca_file            => resource[:ssl_ca_file]
+      :ca_file            => ssl_ca_file
     })
   end
 
