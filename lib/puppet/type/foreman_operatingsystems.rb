@@ -30,7 +30,7 @@ Puppet::Type.newtype(:foreman_operatingsystems) do
   # operatingsystem specific
   newproperty(:architectures, :array_matching => :all) do
     desc 'Array of architectures for this os'
-    defaultto [{"name": "x86_64"}]
+    defaultto [{"name" => "x86_64"}]
   end 
 
   newproperty(:config_templates, :array_matching => :all) do
