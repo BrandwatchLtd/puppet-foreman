@@ -11,17 +11,25 @@ Puppet::Type.type(:foreman_resource).provide(:rest_v3) do
     super + 2
   end
 
+  def settings
+    if @settings
+      @settings
+    else
+      begin
+        @settings = YAML.load_file('/etc/foreman/settings.yaml')
+      rescue
+        Puppet.send(:debug, 'unable to load /etc/foreman/settings.yml')
+        @settings = {}
+      end
+    end
+  end
+
   def oauth_consumer_key
     @oauth_consumer_key ||= begin
-      if resource[:consumer_key]
-        resource[:consumer_key]
-      else
-        begin
-          YAML.load_file('/etc/foreman/settings.yaml')[:oauth_consumer_key]
-        rescue
-          fail "Resource #{resource[:name]} cannot be managed: No OAuth Consumer Key available"
-        end
-      end
+    if resource[:consumer_key]
+      resource[:consumer_key]
+    else
+      settings[:oauth_consumer_key]
     end
   end
 
@@ -30,11 +38,7 @@ Puppet::Type.type(:foreman_resource).provide(:rest_v3) do
       if resource[:consumer_secret]
         resource[:consumer_secret]
       else
-        begin
-          YAML.load_file('/etc/foreman/settings.yaml')[:oauth_consumer_secret]
-        rescue
-          fail "Resource #{resource[:name]} cannot be managed: No OAuth consumer secret available"
-        end
+        settings[:oauth_consumer_secret]
       end
     end
   end
@@ -44,11 +48,7 @@ Puppet::Type.type(:foreman_resource).provide(:rest_v3) do
       if resource[:ssl_ca]
         resource[:ssl_ca]
       else
-        begin
-          YAML.load_file('/etc/foreman/settings.yaml')[:ssl_ca_file]
-        rescue
-          fail "Resource #{resource[:name]} cannot be managed: No SSL CA filename available"
-        end
+        settings[:ssl_ca_file]
       end
     end
   end
