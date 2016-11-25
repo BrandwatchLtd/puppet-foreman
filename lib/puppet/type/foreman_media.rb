@@ -5,6 +5,7 @@ Puppet::Type.newtype(:foreman_media) do
 
   newparam(:name, :namevar => true) do
     desc 'The name of the medium.'
+    isrequired
   end
 
   newparam(:base_url) do
@@ -13,6 +14,7 @@ Puppet::Type.newtype(:foreman_media) do
 
   newparam(:effective_user) do
     desc 'Foreman\'s effective user for the registration (usually admin).'
+    defaultto 'admin'
   end
 
   newparam(:consumer_key) do
