@@ -5,6 +5,7 @@ Puppet::Type.newtype(:foreman_operatingsystems) do
 
   newparam(:name, :namevar => true) do
     desc 'The name of the medium.'
+    fail "Operating System name not valid: #{resource[:name]} should match '/\A(\S+)\Z/'" if @resource[:name] !~ /\A(\S+)\Z/
     isrequired
   end
 
@@ -50,6 +51,7 @@ Puppet::Type.newtype(:foreman_operatingsystems) do
 
   newproperty(:images, :array_matching => :all) do
     desc 'Array of images for this os'
+    defaultto []
   end 
 
   newproperty(:major) do
@@ -58,6 +60,7 @@ Puppet::Type.newtype(:foreman_operatingsystems) do
 
   newproperty(:media, :array_matching => :all) do
     desc 'Array of media for this os'
+    defaultto []
   end 
 
   newproperty(:minor) do
@@ -66,10 +69,12 @@ Puppet::Type.newtype(:foreman_operatingsystems) do
 
   newproperty(:os_default_templates, :array_matching => :all) do
     desc 'Array of default templates for this os'
+    defaultto []
   end 
 
   newproperty(:parameters, :array_matching => :all) do
     desc 'Array of parameters for this os'
+    defaultto []
   end 
 
   newproperty(:password_hash) do
@@ -79,10 +84,12 @@ Puppet::Type.newtype(:foreman_operatingsystems) do
 
   newproperty(:provisioning_templates, :array_matching => :all) do
     desc 'Array of provisioning templates for this os'
+    defaultto []
   end 
 
   newproperty(:ptables, :array_matching => :all) do
     desc 'Array of ptables for this os'
+    defaultto []
   end 
 
   newproperty(:release_name) do
